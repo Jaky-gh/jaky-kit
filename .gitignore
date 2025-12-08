@@ -1,0 +1,21 @@
+# JetBrains / WebStorm
+.idea/
+.idea/*
+*.iml
+
+# Node
+node_modules/
+dist/
+out/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# OS junk
+.DS_Store
+Thumbs.db
