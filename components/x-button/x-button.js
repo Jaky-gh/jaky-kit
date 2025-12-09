@@ -1,5 +1,5 @@
 const sheet = new CSSStyleSheet();
-fetch('./components/x-button/x-button.css')
+fetch(new URL('./x-button.css', import.meta.url))
     .then(r => r.text())
     .then(css => sheet.replaceSync(css));
 

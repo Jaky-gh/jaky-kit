@@ -14,7 +14,22 @@
     <!-- Test button -->
     <x-button>Click me</x-button>
 
+    <!-- Test input -->
+    <h2>x-input</h2>
+    <x-input
+            label="Username"
+            placeholder="Enter your username"
+    >
+    </x-input>
+
+    <script>
+        const input = document.querySelector('x-input');
+        input.addEventListener('x-change', (e) => {
+            console.log('x-input value:', e.detail.value);
+        });
+    </script>
+
     <!-- Import components -->
-    <script type="module" src="components/x-button/x-button.js"></script>
+    <script type="module" src="components/index.js"></script>
 </body>
 </html>
