@@ -18,12 +18,47 @@ class XInput extends HTMLElement {
         root.innerHTML = `
             <div class="wrapper">
                 <label part="label">
-                <span class="label-text"></span>
-                <input part="input" />
+                    <span class="label-text"></span>
+                    <input part="input" />
                 </label>
                 <slot name="helper" class="helper"></slot>
             </div>
         `;
+
+        // Cache references to internal elements
+        this._labelTextEl = root.querySelector('.label-text');
+        this._inputEl = root.querySelector('input');
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        // Ignore if nothing changed
+        if (oldValue === newValue) return;
+
+        if (!this._inputEl || !this._labelTextEl) return;
+
+        switch (name) {
+            case 'label':
+                this._labelTextEl.textContent = newValue ?? '';
+                break;
+
+            case 'placeholder':
+                this._inputEl.placeholder = newValue ?? '';
+                break;
+
+            case 'value':
+                this._inputEl.value = newValue ?? '';
+                break;
+
+            case 'type':
+                // Input type (text, email, password, etc.)
+                this._inputEl.type = newValue || 'text';
+                break;
+
+            case 'disabled':
+                // Boolean attribute: presence = true, absence = false
+                this._inputEl.disabled = newValue !== null;
+                break;
+        }
     }
 }
 

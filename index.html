@@ -17,10 +17,13 @@
     <!-- Test input -->
     <h2>x-input</h2>
     <x-input
-            label="Username"
-            placeholder="Enter your username"
-    >
+            label="Email address"
+            placeholder="you@example.com"
+            type="email"
+            value="default@value.com">
     </x-input>
+    <x-input label="Disabled field" placeholder="Dummy content" disabled></x-input>
+    <x-input label="Password" type="password"></x-input>
 
     <script>
         const input = document.querySelector('x-input');
