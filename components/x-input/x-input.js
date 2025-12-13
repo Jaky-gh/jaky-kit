@@ -60,6 +60,26 @@ class XInput extends HTMLElement {
                 break;
         }
     }
+
+    get value() {
+        return this._inputEl?.value ?? '';
+    }
+
+    set value(v) {
+        this.setAttribute('value', v ?? '');
+    }
+
+    get disabled() {
+        return this.hasAttribute('disabled');
+    }
+
+    set disabled(isDisabled) {
+        if (isDisabled) {
+            this.setAttribute('disabled', '');
+        } else {
+            this.removeAttribute('disabled');
+        }
+    }
 }
 
 customElements.define('x-input', XInput);
