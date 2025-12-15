@@ -28,12 +28,33 @@ class XInput extends HTMLElement {
         // Cache references to internal elements
         this._labelTextEl = root.querySelector('.label-text');
         this._inputEl = root.querySelector('input');
+
+        // Forward user input -> attribute + re-emit event outside shadow DOM
+        this._inputEl.addEventListener('input', () => {
+            const v = this._inputEl.value;
+
+            // Avoid redundant attribute updates (prevents loops/caret issues)
+            if (this.getAttribute('value') !== v) {
+                this.setAttribute('value', v);
+            }
+
+            // Re-emit so consumers can listen on <x-input>
+            this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+        });
+
+        // Forward change event too (optional but nice)
+        this._inputEl.addEventListener('change', () => {
+            this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+        });
+    }
+
+    connectedCallback() {
+        // Ensure initial render reflects any pre-set attributes
+        this._syncAllAttributes();
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        // Ignore if nothing changed
         if (oldValue === newValue) return;
-
         if (!this._inputEl || !this._labelTextEl) return;
 
         switch (name) {
@@ -50,12 +71,10 @@ class XInput extends HTMLElement {
                 break;
 
             case 'type':
-                // Input type (text, email, password, etc.)
                 this._inputEl.type = newValue || 'text';
                 break;
 
             case 'disabled':
-                // Boolean attribute: presence = true, absence = false
                 this._inputEl.disabled = newValue !== null;
                 break;
         }
@@ -74,10 +93,14 @@ class XInput extends HTMLElement {
     }
 
     set disabled(isDisabled) {
-        if (isDisabled) {
-            this.setAttribute('disabled', '');
-        } else {
-            this.removeAttribute('disabled');
+        if (isDisabled) this.setAttribute('disabled', '');
+        else this.removeAttribute('disabled');
+    }
+
+    // ---- Helpers ----
+    _syncAllAttributes() {
+        for (const attr of XInput.observedAttributes) {
+            this.attributeChangedCallback(attr, null, this.getAttribute(attr));
         }
     }
 }
