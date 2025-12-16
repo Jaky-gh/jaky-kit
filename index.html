@@ -13,6 +13,8 @@
 
     <!-- Test button -->
     <x-button>Click me</x-button>
+    <x-button disabled>Disabled</x-button>
+    <x-button type="submit">Submit</x-button>
 
     <!-- Test input -->
     <h2>x-input</h2>
@@ -42,6 +44,14 @@
             // });
         });
 
+    </script>
+
+    <script type="module">
+        document.querySelectorAll('x-button').forEach(button => {
+            button.addEventListener('click', () => {
+                console.log('Button click');
+            });
+        });
     </script>
 </body>
 </html>
